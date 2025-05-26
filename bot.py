@@ -158,7 +158,9 @@ async def on_message(message):
                 
                 # Get current timestamp
                 from datetime import datetime
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                import pytz
+                manila_tz = pytz.timezone('Asia/Manila')
+                timestamp = datetime.now(manila_tz).strftime("%Y-%m-%d %H:%M:%S")
                 
                 # Create a rich embed message
                 embed = discord.Embed(
