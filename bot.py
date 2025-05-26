@@ -178,12 +178,15 @@ async def on_message(message):
                 # Send the video with the embed
                 with open(video_path, 'rb') as f:
                     video_file = discord.File(f, filename=os.path.basename(video_path))
-                    await message.channel.send(
-                        content=f"📢 @here New video shared!" if original_text else "📢 @here New video shared!",
-                        file=video_file,
-                        embed=embed
-                    )
-                
+                    try:
+                        await message.channel.send(
+                            content=f"📢 @here New video shared!" if original_text else "📢 @here New video shared!",
+                            file=video_file,
+                            embed=embed
+                        )
+                    except Exception as e:
+                        print(f"Error sending video: {e}")
+                        await message.channel.send(f"❌ An error occurred while sending the video: {str(e)}")
                 # Clean up the video file
                 try:
                     os.remove(video_path)
