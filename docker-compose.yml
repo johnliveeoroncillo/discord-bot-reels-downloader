@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: fbreels-bot
+    restart: unless-stopped
+    volumes:
+      - ./downloads:/app/downloads  # Mount downloads directory
+      - ./.env:/app/.env  # Mount .env file
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Uncomment the following line if you want to run in detached mode
+    # tty: true
+    # Uncomment the following line if you need to keep the container running for debugging
+    # command: tail -f /dev/null
