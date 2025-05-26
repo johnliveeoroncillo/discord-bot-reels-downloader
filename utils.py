@@ -31,6 +31,12 @@ def get_video_path(url, download_dir='downloads'):
         if share_match:
             video_id = share_match.group(1)
     
+    # Pattern 4: /share/v/ID
+    if not video_id:
+        share_v_match = re.search(r'/share/v/([^/]+)', clean_url)
+        if share_v_match:
+            video_id = share_v_match.group(1)
+    
     # If no specific pattern matched, create a hash of the URL
     if not video_id:
         url_hash = hashlib.md5(clean_url.encode('utf-8')).hexdigest()[:8]

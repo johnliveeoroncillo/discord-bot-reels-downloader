@@ -82,8 +82,9 @@ FACEBOOK_URL_PATTERNS = [
     r'https?://(?:www\.)?(?:facebook\.com|fb\.watch)/reel/.*',
     r'https?://(?:www\.)?facebook\.com/.*/videos/.*',
     r'https?://(?:www\.)?facebook\.com/.*/videos/.*/.*',
-    r'https?://(?:www\.)?facebook\.com/watch/\?v=.*',
+    r'https?://(?:www\.)?facebook\.com/watch/\?v=.*(?:&.*)?',  # Watch URLs with optional parameters like rdid
     r'https?://(?:www\.)?facebook\.com/share/r/.*',  # Shared video links like https://www.facebook.com/share/r/1C2fk5RPaQ/
+    r'https?://(?:www\.)?facebook\.com/share/v/.*',  # Shared video links like https://www.facebook.com/share/v/16Tvh9Ltti/
 ]
 
 def is_facebook_video_url(url):
