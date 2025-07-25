@@ -74,21 +74,12 @@ def is_valid_reels_url(url):
     """Check if the provided URL is a valid Facebook or Instagram Reels URL."""
     return is_valid_facebook_reels_url(url) or is_valid_instagram_reels_url(url)
 
-def download_reel_as_mp4(url, output_dir='downloads'):
-    """Download a Facebook or Instagram Reel as MP4 using yt-dlp with local FFmpeg."""
+def download_reel_as_mp4(url, output_dir='downloads', cookies_file='cookies.txt'):
     try:
-        # Set up FFmpeg
         ffmpeg_path = setup_ffmpeg()
-        
-        # Create output directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
-        
-        # Use yt_dlp Python module to download the video
         import yt_dlp
-        
-        # Get the output path first
         output_path = get_video_path(url)
-        
         ydl_opts = {
             'format': 'best[ext=mp4]',
             'outtmpl': output_path.replace('.mp4', '.%(ext)s'),
@@ -98,12 +89,14 @@ def download_reel_as_mp4(url, output_dir='downloads'):
             'quiet': False,
             'no_warnings': False
         }
-        
+        # Add cookies if file exists
+        if os.path.exists(cookies_file):
+            ydl_opts['cookiefile'] = cookies_file
+
         print(f"Downloading {url}...")
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         print("Download completed successfully!")
-        
     except subprocess.CalledProcessError as e:
         print(f"Error downloading video: {e}")
         sys.exit(1)
