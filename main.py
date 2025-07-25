@@ -65,8 +65,17 @@ def is_valid_facebook_reels_url(url):
     facebook_regex = r'https?://(?:www\.)?(facebook\.com|fb\.watch)/reel/.*'
     return re.match(facebook_regex, url) is not None
 
+def is_valid_instagram_reels_url(url):
+    """Check if the provided URL is a valid Instagram Reels URL."""
+    instagram_regex = r'https?://(?:www\.)?instagram\.com/reel/.*'
+    return re.match(instagram_regex, url) is not None
+
+def is_valid_reels_url(url):
+    """Check if the provided URL is a valid Facebook or Instagram Reels URL."""
+    return is_valid_facebook_reels_url(url) or is_valid_instagram_reels_url(url)
+
 def download_reel_as_mp4(url, output_dir='downloads'):
-    """Download a Facebook Reel as MP4 using yt-dlp with local FFmpeg."""
+    """Download a Facebook or Instagram Reel as MP4 using yt-dlp with local FFmpeg."""
     try:
         # Set up FFmpeg
         ffmpeg_path = setup_ffmpeg()
@@ -104,14 +113,15 @@ def download_reel_as_mp4(url, output_dir='downloads'):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python facebook_reels_downloader.py <facebook_reel_url>")
+        print("Usage: python facebook_reels_downloader.py <reel_url>")
         sys.exit(1)
     
     url = sys.argv[1].strip()
     
-    if not is_valid_facebook_reels_url(url):
-        print("Error: Please provide a valid Facebook Reels URL")
-        print("Example: https://www.facebook.com/reel/1234567890/")
+    if not is_valid_reels_url(url):
+        print("Error: Please provide a valid Facebook or Instagram Reels URL")
+        print("Example Facebook: https://www.facebook.com/reel/1234567890/")
+        print("Example Instagram: https://www.instagram.com/reel/XXXXXXXXXXX/")
         sys.exit(1)
     
     download_reel_as_mp4(url)
